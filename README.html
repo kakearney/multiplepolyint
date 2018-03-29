@@ -1,0 +1,280 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>multiplepolyint.m: Calculate overlap of multiple polygons</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-03-29"><meta name="DC.source" content="./readmeExtras/README.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1><tt>multiplepolyint.m</tt>: Calculate overlap of multiple polygons</h1><!--introduction--><p>Author: Kelly Kearney</p><p>This repository includes the code for the <tt>multiplepolyint.m</tt> Matlab function, along with all dependent functions required to run it.</p><p>This function calculates the intersection regions between multiple polygons.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Getting started</a></li><li><a href="#2">Syntax</a></li><li><a href="#3">Examples</a></li><li><a href="#6">Polygon boolean method options</a></li><li><a href="#7">Contributions</a></li></ul></div><h2 id="1">Getting started</h2><p><b>Prerequisites</b></p><p>This function requires either Matlab R2017b or later, or an earlier version of Matlab paired with the Mapping Toolbox.</p><p><b>Downloading and installation</b></p><p>This code can be downloaded from <a href="https://github.com/kakearney/multiplepolyint-pkg/">Github</a>.</p><p><b>Matlab Search Path</b></p><p>The following folders need to be added to your Matlab Search path (via <tt>addpath</tt>, <tt>pathtool</tt>, etc.):</p><pre class="language-matlab">multiplepolyint-pkg/multiplepolyint
+multiplepolyint-pkg/FEX-function_handle <span class="comment">% for gpcmex option only</span>
+</pre><h2 id="2">Syntax</h2><p><tt>[xnew, ynew, indices] = multiplepolyint(x, y)</tt> calculates the all regions of overlap between the 2D polygons defined by <tt>x</tt> and <tt>y</tt>. The polygon vertex inputs follow the Mapping Toolbox convention where clockwise contours define external contours and counterclockwise contours define internal contours (i.e. holes).  <tt>x</tt> and <tt>y</tt> should be cell arrays of vectors, with one polygon per cell. <tt>xnew</tt> and <tt>ynew</tt> break the union of the input polygons into non-overlapping regions, with a corresponding array <tt>indices</tt> giving the index of the polygons that contribute to each region.</p><p><tt>multiplepolyint(x, y, 'method', method)</tt> allows users to switch between three alternate polygon boolean options:</p><div><ul><li><tt>polybool</tt>: uses polybool function, default for pre-2017b</li><li><tt>gpcmex</tt>: bypasses polybool and calls the gpcmex function directly</li><li><tt>polyshape</tt>: uses polyshape objects, available starting in R2017b, default for R2017b+.</li></ul></div><h2 id="3">Examples</h2><p>We'll start with a few simple polygons: 3 circles with some overlap, and a square around them all.  To make things a little more complicated, we'll put a hole in the middle of circle 3.</p><pre class="codeinput">theta = linspace(0, 2*pi, 100);
+theta = theta(end:-1:1); <span class="comment">% make clockwise</span>
+
+x1 = cos(theta);
+y1 = sin(theta);
+x2 = x1 + 1;
+y2 = y1;
+x3 = [x1 + 0.5 NaN fliplr(x1)*0.3 + 0.5];
+y3 = [y1 - 1 NaN fliplr(y1)*0.3 - 1];
+x4 = [0 0 1 1 0]*4 - 1.5;
+y4 = [0 1 1 0 0]*4 - 2.5;
+
+x = {x1 x2 x3 x4};
+y = {y1 y2 y3 y4};
+
+hold <span class="string">on</span>;
+axis <span class="string">equal</span>;
+xy = [x; y];
+h = plot(xy{:}, <span class="string">'linewidth'</span>, 2);
+legend(h, cellstr(num2str((1:4)')), <span class="string">'location'</span>, <span class="string">'eastoutside'</span>);
+</pre><img vspace="5" hspace="5" src="./readmeExtras/README_01.png" alt=""> <p>We then use this function to calculate all the intersecting regions.</p><pre class="codeinput">[xint, yint, idx] =  multiplepolyint(x,y);
+</pre><p>Plot the resulting regions, labeled by polygon</p><pre class="codeinput">np = length(xint);
+col = jet(np);
+
+<span class="keyword">for</span> ii = 1:length(xint)
+    [f,v] = poly2fv(xint{ii}, yint{ii});
+    hp = patch(<span class="string">'faces'</span>, f, <span class="string">'vertices'</span>, v);
+    set(hp, <span class="string">'edgecolor'</span>, <span class="string">'none'</span>, <span class="string">'facecolor'</span>, col(ii,:));
+
+    str = sprintf(<span class="string">'%d,'</span>, idx{ii});
+
+    [xc,yc] = centroid(polyshape(xint{ii},yint{ii}),1);
+    <span class="keyword">if</span> isequal(idx{ii}, 4)
+        xytxt = [-1 1];
+    <span class="keyword">else</span>
+        xytxt = [xc yc]; <span class="comment">%mean(v);</span>
+    <span class="keyword">end</span>
+    text(xytxt(1), xytxt(2), str(1:end-1), <span class="string">'horiz'</span>, <span class="string">'center'</span>);
+<span class="keyword">end</span>
+legend(h, cellstr(num2str((1:4)')), <span class="string">'location'</span>, <span class="string">'eastoutside'</span>);
+uistack(h, <span class="string">'top'</span>);
+uistack(findobj(<span class="string">'type'</span>,<span class="string">'text'</span>),<span class="string">'top'</span>);
+</pre><img vspace="5" hspace="5" src="./readmeExtras/README_02.png" alt=""> <h2 id="6">Polygon boolean method options</h2><p>I've added several different options for polygon boolean operations over the years.  Earlier versions relied on <tt>polybool</tt>.  But polybool at that time was pretty slow.</p><p>To speed things up, I then added the <tt>gpcmex</tt> option, which more or less replicates polybool's core without all of the input checks.  In older versions of Matlab, this will be significantly faster than polybool, although as of around R2016a polybool's efficiency increased dramatically, and now the pure polybool method is often faster.</p><p>Matlab R2017b finally introduced polygon operations to the main Matlab package (rather than relegating it to the Mapping Toolbox), so I then implemented the <tt>polyshape</tt> option.  If you've got a recent version of Matlab, I recommend sticking with this option; it's more stable than the gpcmex-based options (gpcmex, and therefore polybool, occasionally choke on complicated polygons, for no clear reason).</p><pre class="codeinput">t1 = timeit(@() multiplepolyint(x,y, <span class="string">'method'</span>, <span class="string">'polybool'</span>));
+t2 = timeit(@() multiplepolyint(x,y, <span class="string">'method'</span>, <span class="string">'gpcmex'</span>));
+t3 = timeit(@() multiplepolyint(x,y, <span class="string">'method'</span>, <span class="string">'polyshape'</span>));
+
+fprintf(<span class="string">'Version: %s\n'</span>, version);
+fprintf(<span class="string">'polybool method:  %.5f sec\n'</span>, t1);
+fprintf(<span class="string">'gpcmex method:    %.5f sec\n'</span>, t2);
+fprintf(<span class="string">'polyshape method: %.5f sec\n'</span>, t3);
+</pre><pre class="codeoutput">Version: 9.4.0.763801 (R2018a) Prerelease
+polybool method:  0.02351 sec
+gpcmex method:    0.15001 sec
+polyshape method: 0.04254 sec
+</pre><h2 id="7">Contributions</h2><p>Community contributions to this package are welcome!</p><p>To report bugs, please submit <a href="https://github.com/kakearney/multiplepolyint-pkg/issues">an issue</a> on GitHub and include:</p><div><ul><li>your operating system</li><li>your version of Matlab and all relevant toolboxes (type <tt>ver</tt> at the Matlab command line to get this info)</li><li>code/data to reproduce the error or buggy behavior, and the full text of any error messages received</li></ul></div><p>Please also feel free to submit enhancement requests, or to send pull requests (via GitHub) for bug fixes or new features.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% |multiplepolyint.m|: Calculate overlap of multiple polygons
+% Author: Kelly Kearney
+%
+% This repository includes the code for the |multiplepolyint.m| Matlab function,
+% along with all dependent functions required to run it. 
+%
+% This function calculates the intersection regions between multiple
+% polygons.
+%
+%% Getting started
+%
+% *Prerequisites*
+%
+% This function requires either Matlab R2017b or later, or an earlier
+% version of Matlab paired with the Mapping Toolbox.
+%
+% *Downloading and installation*
+%
+% This code can be downloaded from
+% <https://github.com/kakearney/multiplepolyint-pkg/ Github>.
+%
+% *Matlab Search Path*
+%
+% The following folders need to be added to your Matlab Search path (via
+% |addpath|, |pathtool|, etc.):
+%
+%   multiplepolyint-pkg/multiplepolyint
+%   multiplepolyint-pkg/FEX-function_handle % for gpcmex option only
+
+%% Syntax
+%
+% |[xnew, ynew, indices] = multiplepolyint(x, y)| calculates the
+% all regions of overlap between the 2D polygons defined by |x| and |y|.
+% The polygon vertex inputs follow the Mapping Toolbox convention where
+% clockwise contours define external contours and counterclockwise contours
+% define internal contours (i.e. holes).  |x| and |y| should be cell arrays
+% of vectors, with one polygon per cell. |xnew| and |ynew| break the union
+% of the input polygons into non-overlapping regions, with a corresponding
+% array |indices| giving the index of the polygons that contribute to each
+% region.   
+%
+% |multiplepolyint(x, y, 'method', method)| allows users to switch between
+% three alternate polygon boolean options:
+%
+% * |polybool|: uses polybool function, default for pre-2017b
+% * |gpcmex|: bypasses polybool and calls the gpcmex function directly
+% * |polyshape|: uses polyshape objects, available starting in R2017b,
+% default for R2017b+.
+
+%% Examples
+%
+% We'll start with a few simple polygons: 3 circles with some overlap, and
+% a square around them all.  To make things a little more complicated,
+% we'll put a hole in the middle of circle 3.
+
+theta = linspace(0, 2*pi, 100);
+theta = theta(end:-1:1); % make clockwise
+
+x1 = cos(theta);
+y1 = sin(theta); 
+x2 = x1 + 1;
+y2 = y1;
+x3 = [x1 + 0.5 NaN fliplr(x1)*0.3 + 0.5];
+y3 = [y1 - 1 NaN fliplr(y1)*0.3 - 1];
+x4 = [0 0 1 1 0]*4 - 1.5;
+y4 = [0 1 1 0 0]*4 - 2.5;
+
+x = {x1 x2 x3 x4};
+y = {y1 y2 y3 y4};
+
+hold on;
+axis equal;
+xy = [x; y];
+h = plot(xy{:}, 'linewidth', 2);
+legend(h, cellstr(num2str((1:4)')), 'location', 'eastoutside');
+
+%% 
+% We then use this function to calculate all the intersecting regions.
+
+[xint, yint, idx] =  multiplepolyint(x,y);
+
+%%
+% Plot the resulting regions, labeled by polygon
+
+np = length(xint);
+col = jet(np);
+
+for ii = 1:length(xint)
+    [f,v] = poly2fv(xint{ii}, yint{ii});
+    hp = patch('faces', f, 'vertices', v);
+    set(hp, 'edgecolor', 'none', 'facecolor', col(ii,:));
+    
+    str = sprintf('%d,', idx{ii});
+    
+    [xc,yc] = centroid(polyshape(xint{ii},yint{ii}),1);
+    if isequal(idx{ii}, 4)
+        xytxt = [-1 1];
+    else
+        xytxt = [xc yc]; %mean(v);
+    end
+    text(xytxt(1), xytxt(2), str(1:end-1), 'horiz', 'center');
+end
+legend(h, cellstr(num2str((1:4)')), 'location', 'eastoutside');
+uistack(h, 'top');
+uistack(findobj('type','text'),'top');
+
+%% Polygon boolean method options
+%
+% I've added several different options for polygon boolean operations over
+% the years.  Earlier versions relied on |polybool|.  But polybool at that 
+% time was pretty slow.  
+%
+% To speed things up, I then added the |gpcmex| option, which more or less
+% replicates polybool's core without all of the input checks.  In older
+% versions of Matlab, this will be significantly faster than polybool,
+% although as of around R2016a polybool's efficiency increased
+% dramatically, and now the pure polybool method is often faster.  
+%
+% Matlab R2017b finally introduced polygon operations to the main Matlab
+% package (rather than relegating it to the Mapping Toolbox), so I then
+% implemented the |polyshape| option.  If you've got a recent version of
+% Matlab, I recommend sticking with this option; it's more stable than the
+% gpcmex-based options (gpcmex, and therefore polybool, occasionally choke
+% on complicated polygons, for no clear reason).
+
+
+t1 = timeit(@() multiplepolyint(x,y, 'method', 'polybool'));
+t2 = timeit(@() multiplepolyint(x,y, 'method', 'gpcmex'));
+t3 = timeit(@() multiplepolyint(x,y, 'method', 'polyshape'));
+
+fprintf('Version: %s\n', version);
+fprintf('polybool method:  %.5f sec\n', t1);
+fprintf('gpcmex method:    %.5f sec\n', t2);
+fprintf('polyshape method: %.5f sec\n', t3);
+
+
+%% Contributions
+%
+% Community contributions to this package are welcome!
+% 
+% To report bugs, please submit
+% <https://github.com/kakearney/multiplepolyint-pkg/issues an issue> on GitHub and
+% include:  
+% 
+% * your operating system
+% * your version of Matlab and all relevant toolboxes (type |ver| at the Matlab command line to get this info)  
+% * code/data to reproduce the error or buggy behavior, and the full text of any error messages received 
+% 
+% Please also feel free to submit enhancement requests, or to send pull
+% requests (via GitHub) for bug fixes or new features. 
+
+
+##### SOURCE END #####
+--></body></html>
